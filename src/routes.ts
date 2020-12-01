@@ -2,6 +2,7 @@ import { Router } from 'express'
 import multer from 'multer'
 
 import uploadConfig from './config/upload' 
+import CarrinhoController from './controllers/CarrinhoController'
 import ProductsController from './controllers/ProductsController'
 import UsersController from './controllers/UsersController'
 
@@ -11,9 +12,9 @@ const upload = multer(uploadConfig)
 routes.get('/produtos', ProductsController.showAllProducts)
 routes.get('/produtos/:id', ProductsController.showProduct)
 
-routes.post('/login', UsersController.createUser)
+routes.post('/cadastro', UsersController.createUser)
 routes.get('/login', UsersController.showAllUsers)
-// routes.post('/teste/session', UsersController.setCookie)
+routes.get('/teste/session', (req, res) => CarrinhoController.setCookie('username', 'deserto', 1))
 
 
 

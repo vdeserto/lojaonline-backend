@@ -29,6 +29,7 @@ export default {
         return res.json(productView.render(product))
 
     }
+    
 }
 
   

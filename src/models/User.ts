@@ -1,5 +1,5 @@
-import {Entity, Column, PrimaryGeneratedColumn, Double} from 'typeorm'
-
+import {Entity, Column, PrimaryGeneratedColumn, Unique} from 'typeorm'
+@Unique('UK_user',['name', 'lastName', 'login'])
 @Entity('users') //TypeORM entende que é para o tabela products
 export default class User {
     @PrimaryGeneratedColumn('increment')
