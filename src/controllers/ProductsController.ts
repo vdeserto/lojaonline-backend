@@ -17,6 +17,8 @@ export default {
             type
         } = req.query
 
+        type ? type === undefined ? '' : type
+
         const products = await productsRepository.find({
             where: {type: Like(`%${String(type)}%`)}
         })
