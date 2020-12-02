@@ -15,7 +15,7 @@ routes.get('/produtos/:id', ProductsController.showProductById)
 routes.post('/cadastro', UsersController.createUser)
 routes.post('/login', UsersController.validaLogin)
 routes.post('/carrinho:id', CarrinhoController.storeProductBySession)
-routes.get('/teste/session', (req, res) => CarrinhoController.setCookie('username', 'deserto', 1))
+routes.get('/teste/session', async (req, res) => ( CarrinhoController.getCookie('username')))
 
 
 

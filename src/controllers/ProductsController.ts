@@ -1,5 +1,5 @@
 import {Request, Response} from 'express'
-import { getRepository } from 'typeorm' // Repository Pattern - Regra de como ser criado/deletado
+import { getRepository, Like } from 'typeorm' // Repository Pattern - Regra de como ser criado/deletado
 import * as Yup from 'yup'
 
 import Product from '../models/Product'
@@ -13,7 +13,13 @@ export default {
     async showAllProducts(req: Request, res: Response) {
         const productsRepository = getRepository(Product)
 
-        const products = await productsRepository.find()
+        let {
+            type
+        } = req.query
+
+        const products = await productsRepository.find({
+            where: {type: Like(`%${String(type)}%`)}
+        })
 
         return res.json(productView.renderMany(products))
 
@@ -29,6 +35,8 @@ export default {
         return res.json(productView.render(product))
 
     }
+
+    
     
 }
 
