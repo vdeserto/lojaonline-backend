@@ -19,7 +19,7 @@ export default {
 
     },
 
-    async showProduct(req: Request, res: Response) {
+    async showProductById(req: Request, res: Response) {
         const { id } = req.params // nome id deve ser o mesmo nome do route param nomeado na routes.ts
 
         const productsRepository = getRepository(Product)

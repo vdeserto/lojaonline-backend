@@ -10,10 +10,11 @@ const routes = Router()
 const upload = multer(uploadConfig)
 
 routes.get('/produtos', ProductsController.showAllProducts)
-routes.get('/produtos/:id', ProductsController.showProduct)
+routes.get('/produtos/:id', ProductsController.showProductById)
 
 routes.post('/cadastro', UsersController.createUser)
-routes.get('/login', UsersController.showAllUsers)
+routes.post('/login', UsersController.validaLogin)
+routes.post('/carrinho:id', CarrinhoController.storeProductBySession)
 routes.get('/teste/session', (req, res) => CarrinhoController.setCookie('username', 'deserto', 1))
 
 

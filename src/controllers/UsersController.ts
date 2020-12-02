@@ -3,7 +3,12 @@ import { getRepository } from 'typeorm' // Repository Pattern - Regra de como se
 import * as Yup from 'yup'
 
 import User from '../models/User'
+import Address from '../models/Address'
+
 import userView from '../views/users_view'
+import addressView from '../views/address_view'
+
+import carrinhoController from './CarrinhoController'
 
 var _errors: string[] = []
 
@@ -82,6 +87,51 @@ export default{
         regexAlfabetico.test(param) :
         _errors.push(`O parâmetro ${param} não está em um formato alfabético.`)
 
+    },
+    async entregaCreate (req: Request, res: Response){
+        const { 
+            cep,
+            logradouro,
+            bairro,
+            numero,
+            localidade,
+            uf,
+            complemento
+        } = req.body
+
+        const getCookie = carrinhoController.getCookie('username')
+
+        const data = {
+            cep,
+            logradouro,
+            bairro,
+            numero,
+            localidade,
+            uf,
+            complemento,
+            getCookie
+        }
+        
+        const addressRepository = getRepository(Address)
+        const address = addressRepository.create(data)
+        
+        await addressRepository.save(address)
+
+    },
+
+    async listaAddress(req: Request, res: Response){
+        const getCookie = carrinhoController.getCookie('username')
+
+        const addressRepository = getRepository(Address)
+
+        const address = await addressRepository.findOneOrFail(
+            {
+                cookie: getCookie
+            })
+
+            return res.status(200).json(addressView.render(address))
     }
+
+
 
 }
