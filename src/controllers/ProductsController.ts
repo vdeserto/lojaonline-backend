@@ -17,13 +17,13 @@ export default {
             type
         } = req.query
 
-        type === undefined ? '' : type
+        type === undefined || type === 'undefined' ? type = '' : type
 
         const products = await productsRepository.find({
             where: {type: Like(`%${String(type)}%`)}
         })
 
-        return res.json(productView.renderMany(products))
+        return res.status(200).json(productView.renderMany(products))
 
     },
 
