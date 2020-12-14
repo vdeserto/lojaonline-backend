@@ -27,6 +27,23 @@ export default {
 
     },
 
+    async searchBarProducts (req: Request, res: Response) {
+        const productsRepository = getRepository(Product)
+
+        let {
+            search
+        } = req.query
+
+        search === undefined || search === 'undefined' ? search = '' : search
+
+        const products = await productsRepository.find({
+            where: {description: Like(`%${String(search)}%`)}
+        })
+
+        return res.status(200).json(productView.renderMany(products))
+
+    },
+
     async showProductById(req: Request, res: Response) {
         const { id } = req.params // nome id deve ser o mesmo nome do route param nomeado na routes.ts
 

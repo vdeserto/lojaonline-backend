@@ -1,5 +1,5 @@
 import express from 'express'
-import path from 'path'
+// import path from 'path'
 import cors from 'cors'
 import 'express-async-errors'
 
@@ -13,10 +13,10 @@ const app = express()
 app.use(cors(
     //{origin : 'http://localhost:3000/'} option ORIGIN -> o front-end permitido para consumo da API
     ))
-app.use(express.json())
+// app.use(express.json())
 app.use(routes)
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
-app.use(errorHandler)
+// app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
+// app.use(errorHandler)
 
 
 // Rota - conjunto

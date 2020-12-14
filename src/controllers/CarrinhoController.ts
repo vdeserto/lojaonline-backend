@@ -6,37 +6,39 @@ import carrinho_view from '../views/carrinho_view'
 
 
 export default {
-    async storeProductBySession (req: Request, res: Response){
-        const { id } = req.params
+    async storeProductByCookie (req: Request, res: Response){
+        const { 
+            id,
+            cookie
+        } = req.params 
+        
+        try{
+            this.verificaProdutoByCookie(id.toString(), cookie.toString())
+            const carrinhosRepository = getRepository(Carrinho)
+            const data = {
+                product_id: Number(id), 
+                user_cookie: cookie != undefined ? cookie : 'user'
+            } 
+            const session = carrinhosRepository.create(data)
 
+            await carrinhosRepository.save(session)
+
+            return true
+        }
+        
+        catch{
+            console.error('Não encontrado')
+            return false
+        }
+
+    },
+    async verificaProdutoByCookie(id: String, cookie:String){
         const carrinhosRepository = getRepository(Carrinho)
         
-        const data = {
-            product_id: Number(id), 
-            user_cookie: this.getCookie('username').toString()
-        }
-        const session = carrinhosRepository.create(data)
+        const produtoByCookie = await carrinhosRepository.findOneOrFail({
+            where: {product_id: (`${String(id)}`), user_cookie:(`${String(cookie)}`)}
+        })
 
-        await carrinhosRepository.save(session)
-
-    },
-    getCookie(cookieKey: string) {
-        let key = cookieKey + "="
-        let cookieArray = decodeURIComponent(document.cookie).split(';')
-
-        cookieArray.forEach(cookieParsed => {
-            while (cookieParsed.charAt(0) == ' ') cookieParsed = cookieParsed.substring(1)
-            if (cookieParsed.indexOf(key) == 0) return cookieParsed.substring(key.length, cookieParsed.length).toString()
-        });
-        return ''
-    },
-
-    setCookie(cookieKey: string, cookieValue: string, exDays: Number){
-        let date = new Date()
-        date.setTime(date.getTime() + (Number(exDays)*24*60*60*1000))
-        let expires = 'expires=' + date.toString()
-        document.cookie = cookieKey + "=" + cookieValue + ";" + expires + ";path=/"
-
-      alert(cookieKey + ','+ cookieValue + ','+expires +','+ exDays)
+        return produtoByCookie != undefined ? true : false
     }
 }
